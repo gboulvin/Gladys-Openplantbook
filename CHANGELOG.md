@@ -10,8 +10,6 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
-## [1.0.0] - 2026-10-15
-
 ### Added
 
 - First release of the OpenPlantBook integration: one Gladys device per plant,
@@ -31,5 +29,4 @@ the notes of the version's GitHub Release.
   and while OpenPlantBook is unreachable, and a restart costs no API call.
 - User documentation in English, French, German and Spanish.
 
-[Unreleased]: https://github.com/gboulvin/Gladys-Openplantbook/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/gboulvin/Gladys-Openplantbook/releases/tag/v1.0.0
+[Unreleased]: https://github.com/gboulvin/Gladys-Openplantbook/commits/main

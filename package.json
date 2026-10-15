@@ -1,6 +1,6 @@
 {
   "name": "gladys-openplantbook",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "private": true,
   "description": "Gladys Assistant integration for Open Plantbook: ideal moisture, light and temperature thresholds per plant species.",
   "type": "module",
