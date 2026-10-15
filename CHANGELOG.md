@@ -1,0 +1,32 @@
+# Changelog
+
+All notable changes to this integration are documented in this file. The format
+follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project
+uses [semantic versioning](https://semver.org/).
+
+Describe each change under `## [Unreleased]` as you make it. The Release
+workflow moves that section under the version it ships, and the section becomes
+the notes of the version's GitHub Release.
+
+## [Unreleased]
+
+### Added
+
+- First release of the OpenPlantBook integration: one Gladys device per plant,
+  with the ideal minimum and maximum of soil moisture, temperature, light and
+  air humidity of its species, read from the Open Plantbook API.
+- Configuration screen: OpenPlantBook client ID and secret, the list of plants,
+  the language of the plant names (English, French, German, Spanish), the
+  temperature unit (Celsius or Fahrenheit) and the refresh interval. Buttons to
+  test the connection, search a plant id and refresh every plant.
+- Scene triggers: "Plant thresholds updated" and "OpenPlantBook sync failed".
+- Scene actions: "Check a plant's conditions" (compares your measurements with
+  the ideal ranges and returns a status and a message ready to send), "Get a
+  plant's ideal ranges" and "Refresh OpenPlantBook data".
+- Dashboard widgets: "Plant card" (photo and ideal ranges of one plant) and
+  "My plants" (every followed plant).
+- Local cache under `/data`: the devices keep their thresholds across restarts
+  and while OpenPlantBook is unreachable, and a restart costs no API call.
+- User documentation in English, French, German and Spanish.
+
+[Unreleased]: https://github.com/gboulvin/Gladys-Openplantbook/commits/main

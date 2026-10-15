@@ -1,0 +1,783 @@
+{
+  "manifest_version": 1,
+  "type": "device",
+  "name": "OpenPlantBook",
+  "description": {
+    "en": "Open Plantbook plant database: ideal moisture, light and temperature thresholds per species.",
+    "fr": "Base Open Plantbook : seuils idéaux d'humidité, de lumière et de température par espèce.",
+    "de": "Open-Plantbook-Datenbank: ideale Feuchte-, Licht- und Temperaturwerte je Pflanzenart.",
+    "es": "Base Open Plantbook: umbrales ideales de humedad, luz y temperatura por especie."
+  },
+  "version": "0.0.0",
+  "docker_image": "ghcr.io/gboulvin/gladys-openplantbook:0.0.0",
+  "gladys_version": ">=5.1.0",
+  "cover_image": "https://raw.githubusercontent.com/gboulvin/Gladys-Openplantbook/main/cover.png",
+  "categories": ["environment", "services"],
+  "transports": ["cloud"],
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "Connect to OpenPlantBook",
+        "fr": "Connexion à OpenPlantBook",
+        "de": "Mit OpenPlantBook verbinden",
+        "es": "Conexión a OpenPlantBook"
+      },
+      "description": {
+        "en": "Create a free account on open.plantbook.io, then generate an API key (client ID + client secret) on the API keys page and paste both below. List the plants to follow by their OpenPlantBook id (the scientific name, e.g. monstera deliciosa): the \"Search a plant\" button below finds them for you.",
+        "fr": "Créez un compte gratuit sur open.plantbook.io, puis générez une clé d'API (client ID + client secret) sur la page API keys et collez-les ci-dessous. Listez les plantes à suivre par leur identifiant OpenPlantBook (le nom scientifique, ex. monstera deliciosa) : le bouton « Rechercher une plante » plus bas les trouve pour vous.",
+        "de": "Erstellen Sie ein kostenloses Konto auf open.plantbook.io, erzeugen Sie dann auf der Seite API keys einen API-Schlüssel (Client-ID + Client-Secret) und fügen Sie beide unten ein. Geben Sie die zu verfolgenden Pflanzen mit ihrer OpenPlantBook-ID an (der wissenschaftliche Name, z. B. monstera deliciosa): die Schaltfläche „Pflanze suchen“ unten findet sie für Sie.",
+        "es": "Cree una cuenta gratuita en open.plantbook.io, genere una clave de API (client ID + client secret) en la página API keys y péguelos abajo. Indique las plantas a seguir por su identificador OpenPlantBook (el nombre científico, p. ej. monstera deliciosa): el botón «Buscar una planta» de abajo las encuentra por usted."
+      },
+      "links": [
+        {
+          "url": "https://open.plantbook.io/apikey/show/",
+          "label": {
+            "en": "Generate an API key",
+            "fr": "Générer une clé d'API",
+            "de": "API-Schlüssel erzeugen",
+            "es": "Generar una clave de API"
+          }
+        },
+        {
+          "url": "https://open.plantbook.io/",
+          "label": {
+            "en": "OpenPlantBook website",
+            "fr": "Site OpenPlantBook",
+            "de": "OpenPlantBook-Website",
+            "es": "Sitio de OpenPlantBook"
+          }
+        }
+      ]
+    },
+    {
+      "key": "client_id",
+      "type": "string",
+      "label": { "en": "Client ID", "fr": "Client ID", "de": "Client-ID", "es": "Client ID" },
+      "placeholder": {
+        "en": "From the API keys page",
+        "fr": "Depuis la page API keys",
+        "de": "Von der Seite API keys",
+        "es": "De la página API keys"
+      },
+      "required": true
+    },
+    {
+      "key": "client_secret",
+      "type": "secret",
+      "label": {
+        "en": "Client secret",
+        "fr": "Client secret",
+        "de": "Client-Secret",
+        "es": "Client secret"
+      },
+      "required": true
+    },
+    {
+      "key": "plants",
+      "type": "string",
+      "label": { "en": "Plants", "fr": "Plantes", "de": "Pflanzen", "es": "Plantas" },
+      "description": {
+        "en": "OpenPlantBook ids of your plants, separated by commas (30 at most). One Gladys device is created per plant.",
+        "fr": "Identifiants OpenPlantBook de vos plantes, séparés par des virgules (30 au maximum). Un appareil Gladys est créé par plante.",
+        "de": "OpenPlantBook-IDs Ihrer Pflanzen, durch Kommas getrennt (höchstens 30). Pro Pflanze wird ein Gladys-Gerät angelegt.",
+        "es": "Identificadores OpenPlantBook de sus plantas, separados por comas (30 como máximo). Se crea un dispositivo Gladys por planta."
+      },
+      "placeholder": {
+        "en": "e.g. monstera deliciosa, ficus lyrata",
+        "fr": "ex. monstera deliciosa, ficus lyrata",
+        "de": "z. B. monstera deliciosa, ficus lyrata",
+        "es": "p. ej. monstera deliciosa, ficus lyrata"
+      },
+      "required": false,
+      "default": ""
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "label": {
+        "en": "Language of the plant names",
+        "fr": "Langue des noms de plantes",
+        "de": "Sprache der Pflanzennamen",
+        "es": "Idioma de los nombres de plantas"
+      },
+      "description": {
+        "en": "Common names, device and feature names, and scene messages use this language.",
+        "fr": "Noms communs, noms des appareils et des fonctionnalités, et messages de scène utilisent cette langue.",
+        "de": "Trivialnamen, Geräte- und Funktionsnamen sowie Szenennachrichten verwenden diese Sprache.",
+        "es": "Los nombres comunes, de dispositivos y funciones, y los mensajes de escena usan este idioma."
+      },
+      "required": false,
+      "default": "en",
+      "options": [
+        {
+          "value": "en",
+          "label": { "en": "English", "fr": "Anglais", "de": "Englisch", "es": "Inglés" }
+        },
+        {
+          "value": "fr",
+          "label": { "en": "French", "fr": "Français", "de": "Französisch", "es": "Francés" }
+        },
+        {
+          "value": "de",
+          "label": { "en": "German", "fr": "Allemand", "de": "Deutsch", "es": "Alemán" }
+        },
+        {
+          "value": "es",
+          "label": { "en": "Spanish", "fr": "Espagnol", "de": "Spanisch", "es": "Español" }
+        }
+      ]
+    },
+    {
+      "key": "temperature_unit",
+      "type": "select",
+      "label": {
+        "en": "Temperature unit",
+        "fr": "Unité de température",
+        "de": "Temperatureinheit",
+        "es": "Unidad de temperatura"
+      },
+      "required": false,
+      "default": "celsius",
+      "options": [
+        {
+          "value": "celsius",
+          "label": { "en": "Celsius", "fr": "Celsius", "de": "Celsius", "es": "Celsius" }
+        },
+        {
+          "value": "fahrenheit",
+          "label": {
+            "en": "Fahrenheit",
+            "fr": "Fahrenheit",
+            "de": "Fahrenheit",
+            "es": "Fahrenheit"
+          }
+        }
+      ]
+    },
+    {
+      "key": "refresh_hours",
+      "type": "number",
+      "label": {
+        "en": "Refresh interval (hours)",
+        "fr": "Intervalle de rafraîchissement (heures)",
+        "de": "Aktualisierungsintervall (Stunden)",
+        "es": "Intervalo de actualización (horas)"
+      },
+      "description": {
+        "en": "How often the thresholds of each plant are read again. They rarely change: once a day is plenty.",
+        "fr": "Fréquence de relecture des seuils de chaque plante. Ils changent rarement : une fois par jour suffit.",
+        "de": "Wie oft die Werte jeder Pflanze neu gelesen werden. Sie ändern sich selten: einmal am Tag genügt.",
+        "es": "Cada cuánto se vuelven a leer los umbrales de cada planta. Cambian poco: una vez al día basta."
+      },
+      "required": false,
+      "default": 24,
+      "min": 6,
+      "max": 168
+    }
+  ],
+  "actions": [
+    {
+      "key": "test_connection",
+      "label": {
+        "en": "Test the connection",
+        "fr": "Tester la connexion",
+        "de": "Verbindung testen",
+        "es": "Probar la conexión"
+      },
+      "timeout_seconds": 30
+    },
+    {
+      "key": "search_plant",
+      "label": {
+        "en": "Search a plant",
+        "fr": "Rechercher une plante",
+        "de": "Pflanze suchen",
+        "es": "Buscar una planta"
+      },
+      "timeout_seconds": 30,
+      "fields": [
+        {
+          "key": "query",
+          "type": "string",
+          "label": {
+            "en": "Name to search",
+            "fr": "Nom à rechercher",
+            "de": "Gesuchter Name",
+            "es": "Nombre a buscar"
+          },
+          "placeholder": {
+            "en": "e.g. monstera, basil, rose",
+            "fr": "ex. monstera, basilic, rose",
+            "de": "z. B. Monstera, Basilikum, Rose",
+            "es": "p. ej. monstera, albahaca, rosa"
+          },
+          "required": true
+        }
+      ]
+    },
+    {
+      "key": "refresh_now",
+      "label": {
+        "en": "Refresh all plants now",
+        "fr": "Actualiser toutes les plantes",
+        "de": "Alle Pflanzen jetzt aktualisieren",
+        "es": "Actualizar todas las plantas ahora"
+      },
+      "timeout_seconds": 120
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "thresholds_updated",
+      "label": {
+        "en": "Plant thresholds updated",
+        "fr": "Seuils d'une plante mis à jour",
+        "de": "Pflanzenwerte aktualisiert",
+        "es": "Umbrales de planta actualizados"
+      },
+      "description": {
+        "en": "The ideal ranges of a plant were read for the first time or changed in OpenPlantBook.",
+        "fr": "Les plages idéales d'une plante ont été lues pour la première fois ou ont changé dans OpenPlantBook.",
+        "de": "Die idealen Bereiche einer Pflanze wurden erstmals gelesen oder in OpenPlantBook geändert.",
+        "es": "Los rangos ideales de una planta se leyeron por primera vez o cambiaron en OpenPlantBook."
+      },
+      "fields": [
+        {
+          "key": "plant",
+          "type": "select",
+          "source": "devices",
+          "label": { "en": "Plant", "fr": "Plante", "de": "Pflanze", "es": "Planta" }
+        }
+      ],
+      "variables": [
+        {
+          "key": "plant_name",
+          "type": "string",
+          "label": {
+            "en": "Plant name",
+            "fr": "Nom de la plante",
+            "de": "Pflanzenname",
+            "es": "Nombre de la planta"
+          }
+        },
+        {
+          "key": "min_soil_moisture",
+          "type": "number",
+          "label": {
+            "en": "Min soil moisture (%)",
+            "fr": "Humidité du sol min (%)",
+            "de": "Min. Bodenfeuchte (%)",
+            "es": "Humedad del suelo mín. (%)"
+          }
+        },
+        {
+          "key": "max_soil_moisture",
+          "type": "number",
+          "label": {
+            "en": "Max soil moisture (%)",
+            "fr": "Humidité du sol max (%)",
+            "de": "Max. Bodenfeuchte (%)",
+            "es": "Humedad del suelo máx. (%)"
+          }
+        },
+        {
+          "key": "min_temperature",
+          "type": "number",
+          "label": {
+            "en": "Min temperature",
+            "fr": "Température min",
+            "de": "Min. Temperatur",
+            "es": "Temperatura mín."
+          }
+        },
+        {
+          "key": "max_temperature",
+          "type": "number",
+          "label": {
+            "en": "Max temperature",
+            "fr": "Température max",
+            "de": "Max. Temperatur",
+            "es": "Temperatura máx."
+          }
+        },
+        {
+          "key": "min_light_lux",
+          "type": "number",
+          "label": {
+            "en": "Min light (lux)",
+            "fr": "Lumière min (lux)",
+            "de": "Min. Licht (Lux)",
+            "es": "Luz mín. (lux)"
+          }
+        },
+        {
+          "key": "max_light_lux",
+          "type": "number",
+          "label": {
+            "en": "Max light (lux)",
+            "fr": "Lumière max (lux)",
+            "de": "Max. Licht (Lux)",
+            "es": "Luz máx. (lux)"
+          }
+        },
+        {
+          "key": "min_humidity",
+          "type": "number",
+          "label": {
+            "en": "Min air humidity (%)",
+            "fr": "Humidité de l'air min (%)",
+            "de": "Min. Luftfeuchte (%)",
+            "es": "Humedad del aire mín. (%)"
+          }
+        },
+        {
+          "key": "max_humidity",
+          "type": "number",
+          "label": {
+            "en": "Max air humidity (%)",
+            "fr": "Humidité de l'air max (%)",
+            "de": "Max. Luftfeuchte (%)",
+            "es": "Humedad del aire máx. (%)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "sync_failed",
+      "label": {
+        "en": "OpenPlantBook sync failed",
+        "fr": "Échec de synchro OpenPlantBook",
+        "de": "OpenPlantBook-Sync fehlgeschlagen",
+        "es": "Fallo de sincronización OpenPlantBook"
+      },
+      "description": {
+        "en": "Reading OpenPlantBook started failing (wrong credentials, service down, quota reached).",
+        "fr": "La lecture d'OpenPlantBook a commencé à échouer (identifiants, service indisponible, quota atteint).",
+        "de": "Das Lesen von OpenPlantBook schlägt fehl (Zugangsdaten, Dienst nicht erreichbar, Kontingent erreicht).",
+        "es": "La lectura de OpenPlantBook empezó a fallar (credenciales, servicio caído, cuota alcanzada)."
+      },
+      "fields": [
+        {
+          "key": "error",
+          "type": "select",
+          "label": { "en": "Error", "fr": "Erreur", "de": "Fehler", "es": "Error" },
+          "options": [
+            {
+              "value": "auth",
+              "label": {
+                "en": "Credentials refused",
+                "fr": "Identifiants refusés",
+                "de": "Zugangsdaten abgelehnt",
+                "es": "Credenciales rechazadas"
+              }
+            },
+            {
+              "value": "rate_limited",
+              "label": {
+                "en": "Quota reached",
+                "fr": "Quota atteint",
+                "de": "Kontingent erreicht",
+                "es": "Cuota alcanzada"
+              }
+            },
+            {
+              "value": "not_found",
+              "label": {
+                "en": "Unknown plant id",
+                "fr": "Identifiant de plante inconnu",
+                "de": "Unbekannte Pflanzen-ID",
+                "es": "Identificador de planta desconocido"
+              }
+            },
+            {
+              "value": "network",
+              "label": {
+                "en": "Service unreachable",
+                "fr": "Service injoignable",
+                "de": "Dienst nicht erreichbar",
+                "es": "Servicio inaccesible"
+              }
+            },
+            {
+              "value": "http",
+              "label": {
+                "en": "Server error",
+                "fr": "Erreur du serveur",
+                "de": "Serverfehler",
+                "es": "Error del servidor"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "reason",
+          "type": "string",
+          "label": { "en": "Reason", "fr": "Raison", "de": "Grund", "es": "Motivo" }
+        },
+        {
+          "key": "error",
+          "type": "string",
+          "label": {
+            "en": "Error code",
+            "fr": "Code d'erreur",
+            "de": "Fehlercode",
+            "es": "Código de error"
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "check_plant_conditions",
+      "label": {
+        "en": "Check a plant's conditions",
+        "fr": "Vérifier les conditions d'une plante",
+        "de": "Bedingungen einer Pflanze prüfen",
+        "es": "Comprobar las condiciones de una planta"
+      },
+      "description": {
+        "en": "Compare measurements with the plant's ideal ranges. Fill only the sensors you have; variables accepted.",
+        "fr": "Compare des mesures aux plages idéales de la plante. Remplissez seulement vos capteurs ; variables acceptées.",
+        "de": "Vergleicht Messwerte mit den idealen Bereichen der Pflanze. Nur vorhandene Sensoren ausfüllen; Variablen erlaubt.",
+        "es": "Compara mediciones con los rangos ideales de la planta. Rellene solo sus sensores; se aceptan variables."
+      },
+      "timeout_seconds": 10,
+      "fields": [
+        {
+          "key": "plant",
+          "type": "select",
+          "source": "devices",
+          "label": { "en": "Plant", "fr": "Plante", "de": "Pflanze", "es": "Planta" },
+          "required": true
+        },
+        {
+          "key": "soil_moisture",
+          "type": "string",
+          "label": {
+            "en": "Soil moisture (%)",
+            "fr": "Humidité du sol (%)",
+            "de": "Bodenfeuchte (%)",
+            "es": "Humedad del suelo (%)"
+          },
+          "placeholder": {
+            "en": "e.g. 35 or a variable",
+            "fr": "ex. 35 ou une variable",
+            "de": "z. B. 35 oder eine Variable",
+            "es": "p. ej. 35 o una variable"
+          }
+        },
+        {
+          "key": "temperature",
+          "type": "string",
+          "label": {
+            "en": "Temperature (configured unit)",
+            "fr": "Température (unité configurée)",
+            "de": "Temperatur (eingestellte Einheit)",
+            "es": "Temperatura (unidad configurada)"
+          },
+          "placeholder": {
+            "en": "e.g. 21.5 or a variable",
+            "fr": "ex. 21.5 ou une variable",
+            "de": "z. B. 21.5 oder eine Variable",
+            "es": "p. ej. 21.5 o una variable"
+          }
+        },
+        {
+          "key": "light_lux",
+          "type": "string",
+          "label": {
+            "en": "Light (lux)",
+            "fr": "Lumière (lux)",
+            "de": "Licht (Lux)",
+            "es": "Luz (lux)"
+          },
+          "placeholder": {
+            "en": "e.g. 4000 or a variable",
+            "fr": "ex. 4000 ou une variable",
+            "de": "z. B. 4000 oder eine Variable",
+            "es": "p. ej. 4000 o una variable"
+          }
+        },
+        {
+          "key": "humidity",
+          "type": "string",
+          "label": {
+            "en": "Air humidity (%)",
+            "fr": "Humidité de l'air (%)",
+            "de": "Luftfeuchte (%)",
+            "es": "Humedad del aire (%)"
+          },
+          "placeholder": {
+            "en": "e.g. 55 or a variable",
+            "fr": "ex. 55 ou une variable",
+            "de": "z. B. 55 oder eine Variable",
+            "es": "p. ej. 55 o una variable"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "key": "in_range",
+          "type": "boolean",
+          "label": {
+            "en": "All in ideal range",
+            "fr": "Tout dans la plage idéale",
+            "de": "Alles im idealen Bereich",
+            "es": "Todo en el rango ideal"
+          }
+        },
+        {
+          "key": "status",
+          "type": "string",
+          "label": { "en": "Status", "fr": "Statut", "de": "Status", "es": "Estado" },
+          "description": {
+            "en": "ok, too_dry, too_wet, too_cold, too_hot, too_dark, too_bright, air_too_dry, air_too_humid or no_data.",
+            "fr": "ok, too_dry, too_wet, too_cold, too_hot, too_dark, too_bright, air_too_dry, air_too_humid ou no_data.",
+            "de": "ok, too_dry, too_wet, too_cold, too_hot, too_dark, too_bright, air_too_dry, air_too_humid oder no_data.",
+            "es": "ok, too_dry, too_wet, too_cold, too_hot, too_dark, too_bright, air_too_dry, air_too_humid o no_data."
+          }
+        },
+        {
+          "key": "issues_count",
+          "type": "number",
+          "label": {
+            "en": "Number of issues",
+            "fr": "Nombre de problèmes",
+            "de": "Anzahl der Probleme",
+            "es": "Número de problemas"
+          }
+        },
+        {
+          "key": "message",
+          "type": "string",
+          "label": {
+            "en": "Message ready to send",
+            "fr": "Message prêt à envoyer",
+            "de": "Nachricht zum Senden",
+            "es": "Mensaje listo para enviar"
+          }
+        }
+      ]
+    },
+    {
+      "key": "get_plant_thresholds",
+      "label": {
+        "en": "Get a plant's ideal ranges",
+        "fr": "Lire les plages idéales d'une plante",
+        "de": "Ideale Bereiche einer Pflanze lesen",
+        "es": "Obtener los rangos ideales de una planta"
+      },
+      "description": {
+        "en": "Expose the thresholds of a plant to the following actions of the scene.",
+        "fr": "Expose les seuils d'une plante aux actions suivantes de la scène.",
+        "de": "Stellt die Werte einer Pflanze den folgenden Aktionen der Szene bereit.",
+        "es": "Expone los umbrales de una planta a las siguientes acciones de la escena."
+      },
+      "timeout_seconds": 10,
+      "fields": [
+        {
+          "key": "plant",
+          "type": "select",
+          "source": "devices",
+          "label": { "en": "Plant", "fr": "Plante", "de": "Pflanze", "es": "Planta" },
+          "required": true
+        }
+      ],
+      "outputs": [
+        {
+          "key": "plant_name",
+          "type": "string",
+          "label": {
+            "en": "Plant name",
+            "fr": "Nom de la plante",
+            "de": "Pflanzenname",
+            "es": "Nombre de la planta"
+          }
+        },
+        {
+          "key": "scientific_name",
+          "type": "string",
+          "label": {
+            "en": "Scientific name",
+            "fr": "Nom scientifique",
+            "de": "Wissenschaftlicher Name",
+            "es": "Nombre científico"
+          }
+        },
+        {
+          "key": "category",
+          "type": "string",
+          "label": { "en": "Category", "fr": "Catégorie", "de": "Kategorie", "es": "Categoría" }
+        },
+        {
+          "key": "min_soil_moisture",
+          "type": "number",
+          "label": {
+            "en": "Min soil moisture (%)",
+            "fr": "Humidité du sol min (%)",
+            "de": "Min. Bodenfeuchte (%)",
+            "es": "Humedad del suelo mín. (%)"
+          }
+        },
+        {
+          "key": "max_soil_moisture",
+          "type": "number",
+          "label": {
+            "en": "Max soil moisture (%)",
+            "fr": "Humidité du sol max (%)",
+            "de": "Max. Bodenfeuchte (%)",
+            "es": "Humedad del suelo máx. (%)"
+          }
+        },
+        {
+          "key": "min_temperature",
+          "type": "number",
+          "label": {
+            "en": "Min temperature",
+            "fr": "Température min",
+            "de": "Min. Temperatur",
+            "es": "Temperatura mín."
+          }
+        },
+        {
+          "key": "max_temperature",
+          "type": "number",
+          "label": {
+            "en": "Max temperature",
+            "fr": "Température max",
+            "de": "Max. Temperatur",
+            "es": "Temperatura máx."
+          }
+        },
+        {
+          "key": "min_light_lux",
+          "type": "number",
+          "label": {
+            "en": "Min light (lux)",
+            "fr": "Lumière min (lux)",
+            "de": "Min. Licht (Lux)",
+            "es": "Luz mín. (lux)"
+          }
+        },
+        {
+          "key": "max_light_lux",
+          "type": "number",
+          "label": {
+            "en": "Max light (lux)",
+            "fr": "Lumière max (lux)",
+            "de": "Max. Licht (Lux)",
+            "es": "Luz máx. (lux)"
+          }
+        },
+        {
+          "key": "min_humidity",
+          "type": "number",
+          "label": {
+            "en": "Min air humidity (%)",
+            "fr": "Humidité de l'air min (%)",
+            "de": "Min. Luftfeuchte (%)",
+            "es": "Humedad del aire mín. (%)"
+          }
+        },
+        {
+          "key": "max_humidity",
+          "type": "number",
+          "label": {
+            "en": "Max air humidity (%)",
+            "fr": "Humidité de l'air max (%)",
+            "de": "Max. Luftfeuchte (%)",
+            "es": "Humedad del aire máx. (%)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "refresh_plants",
+      "label": {
+        "en": "Refresh OpenPlantBook data",
+        "fr": "Actualiser les données OpenPlantBook",
+        "de": "OpenPlantBook-Daten aktualisieren",
+        "es": "Actualizar los datos de OpenPlantBook"
+      },
+      "description": {
+        "en": "Read the thresholds of every followed plant again now.",
+        "fr": "Relit maintenant les seuils de toutes les plantes suivies.",
+        "de": "Liest die Werte aller verfolgten Pflanzen jetzt neu.",
+        "es": "Vuelve a leer ahora los umbrales de todas las plantas seguidas."
+      },
+      "timeout_seconds": 120,
+      "outputs": [
+        {
+          "key": "refreshed",
+          "type": "number",
+          "label": {
+            "en": "Plants refreshed",
+            "fr": "Plantes actualisées",
+            "de": "Aktualisierte Pflanzen",
+            "es": "Plantas actualizadas"
+          }
+        },
+        {
+          "key": "failed",
+          "type": "number",
+          "label": {
+            "en": "Plants in error",
+            "fr": "Plantes en échec",
+            "de": "Pflanzen mit Fehler",
+            "es": "Plantas con error"
+          }
+        }
+      ]
+    }
+  ],
+  "widgets": [
+    {
+      "key": "plant_card",
+      "label": {
+        "en": "Plant card",
+        "fr": "Fiche plante",
+        "de": "Pflanzenkarte",
+        "es": "Ficha de planta"
+      },
+      "description": {
+        "en": "Photo and ideal ranges of one plant: soil moisture, temperature, light, air humidity.",
+        "fr": "Photo et plages idéales d'une plante : humidité du sol, température, lumière, humidité de l'air.",
+        "de": "Foto und ideale Bereiche einer Pflanze: Bodenfeuchte, Temperatur, Licht, Luftfeuchte.",
+        "es": "Foto y rangos ideales de una planta: humedad del suelo, temperatura, luz, humedad del aire."
+      },
+      "icon": "feather",
+      "action_timeout_seconds": 30,
+      "settings": [
+        {
+          "key": "plant",
+          "type": "select",
+          "source": "devices",
+          "label": { "en": "Plant", "fr": "Plante", "de": "Pflanze", "es": "Planta" },
+          "required": true
+        }
+      ]
+    },
+    {
+      "key": "plants_overview",
+      "label": {
+        "en": "My plants",
+        "fr": "Mes plantes",
+        "de": "Meine Pflanzen",
+        "es": "Mis plantas"
+      },
+      "description": {
+        "en": "Every followed plant with its photo and ideal ranges.",
+        "fr": "Toutes les plantes suivies avec leur photo et leurs plages idéales.",
+        "de": "Alle verfolgten Pflanzen mit Foto und idealen Bereichen.",
+        "es": "Todas las plantas seguidas con su foto y sus rangos ideales."
+      },
+      "icon": "list",
+      "action_timeout_seconds": 120
+    }
+  ]
+}
