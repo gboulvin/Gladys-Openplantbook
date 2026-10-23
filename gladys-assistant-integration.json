@@ -8,8 +8,8 @@
     "de": "Open-Plantbook-Datenbank: ideale Feuchte-, Licht- und Temperaturwerte je Pflanzenart.",
     "es": "Base Open Plantbook: umbrales ideales de humedad, luz y temperatura por especie."
   },
-  "version": "1.0.0",
-  "docker_image": "ghcr.io/gboulvin/gladys-openplantbook:1.0.0",
+  "version": "1.0.1",
+  "docker_image": "ghcr.io/gboulvin/gladys-openplantbook:1.0.1",
   "gladys_version": ">=5.1.0",
   "cover_image": "https://raw.githubusercontent.com/gboulvin/Gladys-Openplantbook/main/cover.png",
   "categories": ["environment", "services"],

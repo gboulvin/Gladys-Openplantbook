@@ -10,6 +10,16 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-10-22
+
+### Security
+
+- `brace-expansion`, pulled in by ESLint, raised to 5.0.12 against the
+  high-severity denial-of-service advisories (GHSA-mh99-v99m-4gvg and
+  related). A development tool only: the published image never shipped it.
+- The image is rebuilt on the latest `node:24-alpine` (Node.js and Alpine
+  security patches); development tools and CI actions up to date.
+
 ## [1.0.0] - 2026-10-15
 
 ### Added
@@ -31,5 +41,6 @@ the notes of the version's GitHub Release.
   and while OpenPlantBook is unreachable, and a restart costs no API call.
 - User documentation in English, French, German and Spanish.
 
-[Unreleased]: https://github.com/gboulvin/Gladys-Openplantbook/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/gboulvin/Gladys-Openplantbook/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/gboulvin/Gladys-Openplantbook/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/gboulvin/Gladys-Openplantbook/releases/tag/v1.0.0
