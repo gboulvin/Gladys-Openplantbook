@@ -5,7 +5,7 @@ plant database into [Gladys Assistant](https://gladysassistant.com): the
 **ideal soil moisture, light, temperature and air humidity** of each of your
 plants' species, as Gladys devices, scene cards and dashboard widgets.
 
-- **Type**: device · **Transport**: cloud · **Gladys**: 5.1.0 or later
+- **Type**: device · **Transport**: cloud · **Gladys**: 5.3.0 or later
 - **Languages**: English, Français, Deutsch, Español
 - Built from the official
   [integration template](https://github.com/GladysAssistant/integration-template-js)
